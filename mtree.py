@@ -23,7 +23,12 @@ class TreeError(Exception):
 class Node(object):
 
 	def __init__(self,head,child,tree=None):
-		self.label = (head.label[0],head.label[1]+1) # project
+		if child and head.terminal and child.terminal:
+			# special case for head-movement
+			self.label = (head.label[0],head.label[1])
+		else:
+			self.label = (head.label[0],head.label[1]+1) # project
+
 		self.paths = [(self,)] # paths to root
 		self.projections = [self] # things projected
 		self.mothers = []
@@ -40,6 +45,8 @@ class Node(object):
 		self.tree = tree
 
 	def __repr__(self):
+		if self.label[1] == 0:
+			return(self.label[0]) # special case for complex heads
 		return(self.label[0] + str(self.label[1]))
 
 	@property
