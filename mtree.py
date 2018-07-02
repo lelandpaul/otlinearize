@@ -32,6 +32,12 @@ class Node(object):
 		return((self.head,self.child))
 
 	def addMother(self,new_mom):
+		if self.name[0] == new_mom.name[0] and new_mom.head:
+			raise ValueError(str(new_mom) + #
+					" already has head " + str(new_mom.head))
+		elif new_mom.child:
+			raise ValueError(str(new_mom) + #
+					" already has child " + str(new_mom.child))
 		self.mothers.append(new_mom)
 		for path in new_mom.paths:
 			self.paths.append(path + (self,))
@@ -72,8 +78,15 @@ class MTree(object):
 		new_node = Node(name,mothers)
 		for mom in new_node.mothers:
 			if name[0] == mom.name[0]:
+				if mom.head:
+					raise ValueError(str(mom) + 
+							" already has head " + str(mom.head))
 				mom.head = new_node
-			else: mom.child = new_node
+			else: 
+				if mom.child:
+					raise ValueError(str(mom) + 
+							" already has child " + str(mom.child))
+				mom.child = new_node
 		self.nodes.append(new_node)
 		return(new_node)
 
@@ -96,4 +109,3 @@ class MTree(object):
 # b = t.addNode("B",a)
 # c = t.addNode("C",b)
 # c.addMother(a)
-
