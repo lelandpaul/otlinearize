@@ -34,6 +34,8 @@ class Node(object):
 		if child: # this might be None
 			self.child.add_mother(self) # add the upward edge
 
+		self.terminal = False
+
 	def __repr__(self):
 		return(self.label[0] + str(self.label[1]))
 
@@ -69,6 +71,7 @@ class TerminalNode(Node):
 		self.child = None
 		self.paths = [(self,)]
 		self.mothers = []
+		self.terminal = True
 
 	def update_paths(self):
 		self.paths = []
@@ -133,6 +136,10 @@ class MTree(object):
 	@property
 	def branching_nodes(self):
 		yield from [n for n in self.nodes.values() if n.branching]
+
+	@property
+	def nonterminal_nodes(self):
+		yield from [n for n in self.nodes.values() if n.terminal]
 
 
 t = MTree(["A","B"],[("A0","B0")])
