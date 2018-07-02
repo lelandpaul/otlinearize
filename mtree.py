@@ -13,13 +13,16 @@ class Node(object):
 
 	def __init__(self,
 				name,
-				mother = None,
+				mothers = [],
 				head = None,
 				child = None):
 		self.name = name
-		self.mother = mother
+		self.mothers = mothers
 		self.head = head
 		self.child = child
+
+	def addMother(self,new_mom):
+		self.mothers.append(new_mom)
 
 	def isTerminal(self):
 		return(not (head and child))
