@@ -105,21 +105,26 @@ class MTree(object):
 		roots = list(self.terminals)
 		while merges:
 			cur_merge = merges.pop(0) # get the first one
-			if cur_merge[0] not in self.nodes or cur_merge[1] not in self.nodes:
+			if cur_merge[0] not in self.nodes or (cur_merge[1] and cur_merge[1]
+					not in self.nodes):
 				   # We haven't created the necessary nodes yet,
 				   # so skip it and come back
 				merges.append(cur_merge)
 				continue
 
-			# Create a new node
+			# find the head
 			head = self.nodes[cur_merge[0]]
-			child = self.nodes[cur_merge[1]]
-			# remove these from roots:
 			try: roots.remove(head)
 			except ValueError: pass # wasn't there
-			try: roots.remove(child)
-			except ValueError: pass
 
+			# find the child, if applicable
+			if cur_merge[1]: # this might be None
+				child = self.nodes[cur_merge[1]]
+				try: roots.remove(child)
+				except ValueError: pass
+			else: child = None
+
+			# make a new node
 			new_node = Node(head,child)
 			# This is a root now:
 			roots.append(new_node)
@@ -151,5 +156,10 @@ class MTree(object):
 
 
 
-t = MTree(["A","B"],[("A0","B0")])
+t = MTree(["A","B","C"],
+		  [("C0",None),
+		   ("B0","C1"),
+		   ("A0","B1"),
+		   ("A1","C1")])
+
 
