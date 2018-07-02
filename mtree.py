@@ -43,8 +43,9 @@ class MTree(object):
 		self.nodes.append(Node(name,mothers))
 
 	def getNode(self,name):
-		# Returns the node with a given name
-		pass
+		# Returns the node with the given name
+		return([n for n in self.nodes if n.name = name][0])
+		
 
 	def getSisters(self,node):
 		# Returns the sister nodes (if any) of a given node
