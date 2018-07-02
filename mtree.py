@@ -40,7 +40,7 @@ class MTree(object):
 
 	def addNode(self,name,mothers):
 		# Adds a new child node with given name, mothers
-		pass
+		self.nodes.append(Node(name,mothers))
 
 	def getNode(self,name):
 		# Returns the node with a given name
