@@ -25,10 +25,12 @@ class Node(object):
 	def __init__(self,head,child,tree=None):
 		self.label = (head.label[0],head.label[1]+1) # project
 		self.paths = [(self,)] # paths to root
+		self.projections = [self] # things projected
 		self.mothers = []
 
 		self.head = head # the head Node
 		self.head.add_mother(self) # add the upward edge
+		self.head.add_projection(self) # add the projection
 
 		self.child = child # the child Node
 		if child: # this might be None
@@ -48,6 +50,11 @@ class Node(object):
 		# add an additional mother
 		self.mothers.append(node)
 		self.update_paths() # update paths to match
+
+	def add_projection(self,node):
+		self.projections.append(node)
+		if not self.terminal:
+			self.head.add_projection(node) # propagate down
 
 	def update_paths(self):
 		new_paths = []
@@ -88,6 +95,14 @@ class Node(object):
 		# ccommand is defined in terms of dominator subsets
 		return(self.dominators <= target.dominators)
 
+	def path_commands(self,target):
+		# true if all paths from the target passes through a projection of this
+		# node.
+		for path in target.paths:
+			if not set(path) & set(self.projections):
+				return(False)
+		return(True)
+
 class TerminalNode(Node):
 
 	def __init__(self,name,tree = None):
@@ -95,6 +110,7 @@ class TerminalNode(Node):
 		self.head = None
 		self.child = None
 		self.paths = [(self,)]
+		self.projections = [self]
 		self.mothers = []
 		self.terminal = True
 		self.tree = tree
