@@ -35,7 +35,7 @@ class Node(object):
 			self.child.add_mother(self) # add the upward edge
 
 	def __repr__(self):
-		return(str(self.label))
+		return(self.label[0] + str(self.label[1]))
 
 	@property
 	def daughters(self):
