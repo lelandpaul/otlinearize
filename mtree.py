@@ -17,7 +17,8 @@ class Node(object):
 				head = None,
 				child = None):
 		self.name = name
-		self.mothers = mothers
+		if isinstance(mothers,Node): self.mothers = [mothers]
+		else: self.mothers = mothers
 		self.head = head
 		self.child = child
 		daughters = (head,child)
@@ -26,15 +27,15 @@ class Node(object):
 		self.mothers.append(new_mom)
 
 	def isTerminal(self):
-		return(not (head and child))
+		return(not (self.head and self.child))
 
 	def isRoot(self):
-		return(not mother)
+		return(not self.mothers)
 
 	def getProjection(self):
 		# Returns the mother that is also a projection
 		for mom in self.mothers:
-			if mom.head = self: return(mom)
+			if mom.head == self: return(mom)
 		return(None)
 
 	def __repr__(self):
@@ -76,6 +77,3 @@ class MTree(object):
 		# Yields all paths from a given terminal node
 		# Basically: Do DFS upward from the node, yield once you get to the root
 		pass
-
-
-
