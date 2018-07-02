@@ -199,13 +199,3 @@ class MTree(object):
 	def dominators_of(self,node):
 		# returns the nodes that dominate a given node
 		return([n for n in self.nodes.values() if n.dominates(node)])
-
-
-
-t = MTree(["A","B","C"],
-		  [("C0",None),
-		   ("B0","C1"),
-		   ("A0","B1"),
-		   ("A1","C1")])
-
-
