@@ -71,3 +71,53 @@ class TerminalNode(Node):
 		for mom in self.mothers:
 			for path in mom.paths:
 				self.paths.append(path + (self,))
+
+
+
+class MTree(object):
+	"""
+	An MTree object.
+
+	MTree(terminals,merges)
+
+	terminals - list of strings labelling terminal nodes
+	merges - list of tuples (head, child) indicating merges
+	"""
+
+	def __init__(self,terminals,merges):
+		self.terminals = (TerminalNode(n) for n in terminals)
+		self.nodes = {str(n): n for n in self.terminals}
+		self.root = None
+
+		# build it
+
+		roots = list(self.terminals)
+		while merges:
+			cur_merge = merges.pop(0) # get the first one
+			if cur_merge[0] not in self.nodes or cur_merge[1] not in self.nodes:
+				   # We haven't created the necessary nodes yet,
+				   # so skip it and come back
+				merges.append(cur_merge)
+				continue
+
+			# Create a new node
+			head = self.nodes[cur_merge[0]]
+			child = self.nodes[cur_merge[1]]
+			# remove these from roots:
+			try: roots.remove(head)
+			except ValueError: pass # wasn't there
+			try: roots.remove(child)
+			except ValueError: pass
+
+			new_node = Node(head,child)
+			# This is a root now:
+			roots.append(new_node)
+			# Make sure we keep track of this node:
+			self.nodes[str(new_node)] = new_node
+
+		# Ok, we've built a tree. Check if it has a unique root:
+		if len(roots) > 1:
+			raise TreeError("No unique root.")
+		self.root = roots[0] # ok, we succeeded
+
+
