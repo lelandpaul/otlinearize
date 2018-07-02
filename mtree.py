@@ -22,7 +22,7 @@ class TreeError(Exception):
 
 class Node(object):
 
-	def __init__(self,head,child):
+	def __init__(self,head,child,tree=None):
 		self.label = (head.label[0],head.label[1]+1) # project
 		self.paths = [(self,)] # paths to root
 		self.mothers = []
@@ -35,6 +35,7 @@ class Node(object):
 			self.child.add_mother(self) # add the upward edge
 
 		self.terminal = False
+		self.tree = tree
 
 	def __repr__(self):
 		return(self.label[0] + str(self.label[1]))
@@ -67,15 +68,25 @@ class Node(object):
 	def word(self):
 		return(self.label[1] == 0)
 
+	def dominates(self,target):
+		# target is a node. true if self dominates target.
+		return(bool([p for p in target.paths if self in p]))
+
+	@property
+	def terminals_dominated(self):
+		# returns all terminals dominated by this node
+		return(list(self.tree.terminals_dominated(self)))
+
 class TerminalNode(Node):
 
-	def __init__(self,name):
+	def __init__(self,name,tree = None):
 		self.label = (str(name),0)
 		self.head = None
 		self.child = None
 		self.paths = [(self,)]
 		self.mothers = []
 		self.terminal = True
+		self.tree = tree
 
 	def update_paths(self):
 		self.paths = []
@@ -96,7 +107,7 @@ class MTree(object):
 	"""
 
 	def __init__(self,terminals,merges):
-		self.terminals = (TerminalNode(n) for n in terminals)
+		self.terminals = [TerminalNode(n, tree =self) for n in terminals]
 		self.nodes = {str(n): n for n in self.terminals}
 		self.root = None
 
@@ -125,7 +136,7 @@ class MTree(object):
 			else: child = None
 
 			# make a new node
-			new_node = Node(head,child)
+			new_node = Node(head,child,tree = self)
 			# This is a root now:
 			roots.append(new_node)
 			# Make sure we keep track of this node:
@@ -153,6 +164,10 @@ class MTree(object):
 	@property
 	def words(self):
 		yield from [n for n in self.nodes.values() if n.word]
+
+	def terminals_dominated(self,node):
+		# yields the terminal nodes dominated by node
+		yield from [n for n in self.terminals if node.dominates(n)]
 
 
 
