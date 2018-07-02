@@ -21,13 +21,15 @@ class Node(object):
 		else: self.mothers = mothers
 		self.head = head
 		self.child = child
-		self.daughters = (head,child)
 		
 		self.paths = []
 		if self.mothers == []: self.paths = [(self,)]
 		for mom in self.mothers:
 			for path in mom.paths:
 				self.paths.append(path + (self,))
+
+	def getDaughters(self):
+		return((self.head,self.child))
 
 	def addMother(self,new_mom):
 		self.mothers.append(new_mom)
@@ -46,6 +48,12 @@ class Node(object):
 			if mom.head == self: return(mom)
 		return(None)
 
+	def getSisters(self):
+		# Yields the sisters (if any)
+		for mom in self.mothers:
+			for n in mom.getDaughters():
+				if n and n != self: yield n
+
 	def __repr__(self):
 		return(self.name)
 
@@ -61,7 +69,13 @@ class MTree(object):
 		# Adds a new child node with given name, mothers
 		if name in self.getNodeNames():
 			raise ValueError("Name not unique.")
-		self.nodes.append(Node(name,mothers))
+		new_node = Node(name,mothers)
+		for mom in new_node.mothers:
+			if name[0] == mom.name[0]:
+				mom.head = new_node
+			else: mom.child = new_node
+		self.nodes.append(new_node)
+		return(new_node)
 
 	def getNode(self,name):
 		# Returns the node with the given name
@@ -71,12 +85,6 @@ class MTree(object):
 		# returns all node names
 		return([n.name for n in self.nodes])
 
-	def getSisters(self,node):
-		# Yields the sister nodes (if any) of a given node
-		for mom in node.mothers:
-			for n in mom.daughters:
-				if n != node: yield n
-
 	def getTerminals(self):
 		# Returns all terminal nodes
 		return([n for n in self.nodes if n.isTerminal()])
@@ -85,9 +93,7 @@ class MTree(object):
 
 # t = MTree("A")
 # a = t.root
-# t.addNode("B",a)
-# b = t.getNode("B")
-# t.addNode("C",b)
-# c = t.getNode("C")
+# b = t.addNode("B",a)
+# c = t.addNode("C",b)
 # c.addMother(a)
 
