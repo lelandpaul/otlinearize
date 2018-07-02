@@ -31,6 +31,12 @@ class Node(object):
 	def isRoot(self):
 		return(not mother)
 
+	def getProjection(self):
+		# Returns the mother that is also a projection
+		for mom in self.mothers:
+			if mom.head = self: return(mom)
+		return(None)
+
 	def __repr__(self):
 		return(self.name)
 
@@ -67,6 +73,9 @@ class MTree(object):
 		return([n for n in self.nodes if n.isTerminal()])
 
 	def getPaths(self,node):
-		# Returns all paths from a given terminal node
+		# Yields all paths from a given terminal node
+		# Basically: Do DFS upward from the node, yield once you get to the root
 		pass
+
+
 
