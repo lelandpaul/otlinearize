@@ -20,6 +20,7 @@ class Node(object):
 		self.mothers = mothers
 		self.head = head
 		self.child = child
+		daughters = (head,child)
 
 	def addMother(self,new_mom):
 		self.mothers.append(new_mom)
