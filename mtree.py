@@ -48,11 +48,20 @@ class Node(object):
 	def isRoot(self):
 		return(not self.mothers)
 
-	def getProjection(self):
+	def getImmediateProjection(self):
 		# Returns the mother that is also a projection
 		for mom in self.mothers:
 			if mom.head == self: return(mom)
 		return(None)
+
+	def getProjections(self):
+		# Returns all projections
+		projections = []
+		curnode = self
+		while True:
+			projections.append(curnode)
+			curnode = curnode.getImmediateProjection()
+			if not curnode: return(projections)
 
 	def getSisters(self):
 		# Yields the sisters (if any)
@@ -104,8 +113,12 @@ class MTree(object):
 
 
 
-# t = MTree("A")
-# a = t.root
-# b = t.addNode("B",a)
-# c = t.addNode("C",b)
-# c.addMother(a)
+t = MTree("AP")
+ap = t.root
+apx = t.addNode("AP*",ap)
+a = t.addNode("A",apx)
+bp = t.addNode("BP",apx)
+b = t.addNode("B",bp)
+cp = t.addNode("CP",bp)
+c = t.addNode("C",cp)
+cp.addMother(ap)
