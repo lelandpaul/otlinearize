@@ -40,6 +40,8 @@ class MTree(object):
 
 	def addNode(self,name,mothers):
 		# Adds a new child node with given name, mothers
+		if name in self.getNodeNames():
+			raise ValueError("Name not unique.")
 		self.nodes.append(Node(name,mothers))
 
 	def getNode(self,name):
