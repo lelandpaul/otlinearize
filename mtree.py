@@ -62,10 +62,9 @@ class MTree(object):
 			for n in mom.daughters:
 				if n != node: yield n
 
-
 	def getTerminals(self):
 		# Returns all terminal nodes
-		pass
+		return([n for n in self.nodes if n.isTerminal()])
 
 	def getPaths(self,node):
 		# Returns all paths from a given terminal node
