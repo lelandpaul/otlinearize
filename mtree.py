@@ -30,3 +30,31 @@ class Node(object):
 	def isRoot(self):
 		return(not mother)
 
+
+class MTree(object):
+
+	def __init__(self,
+				 root_name):
+		self.root = Node(root_name)
+		self.nodes = [self.root]
+
+	def addNode(self,name,mothers):
+		# Adds a new child node with given name, mothers
+		pass
+
+	def getNode(self,name):
+		# Returns the node with a given name
+		pass
+
+	def getSisters(self,node):
+		# Returns the sister nodes (if any) of a given node
+		pass
+
+	def getTerminals(self):
+		# Returns all terminal nodes
+		pass
+
+	def getPaths(self,node):
+		# Returns all paths from a given terminal node
+		pass
+
