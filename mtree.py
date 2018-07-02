@@ -75,7 +75,18 @@ class Node(object):
 	@property
 	def terminals_dominated(self):
 		# returns all terminals dominated by this node
-		return(list(self.tree.terminals_dominated(self)))
+		return(self.tree.terminals_dominated(self))
+
+	@property
+	def dominators(self):
+		# returns all nodes that dominate this one
+		# defined to be non-reflexive, for c-command reasons
+		return(set(self.tree.dominators_of(self)) - {self})
+
+	def ccommand(self,target):
+		# returns true if this node ccommands the target
+		# ccommand is defined in terms of dominator subsets
+		return(self.dominators <= target.dominators)
 
 class TerminalNode(Node):
 
@@ -166,8 +177,12 @@ class MTree(object):
 		yield from [n for n in self.nodes.values() if n.word]
 
 	def terminals_dominated(self,node):
-		# yields the terminal nodes dominated by node
-		yield from [n for n in self.terminals if node.dominates(n)]
+		# returns the terminal nodes dominated by node
+		return([n for n in self.terminals if node.dominates(n)])
+
+	def dominators_of(self,node):
+		# returns the nodes that dominate a given node
+		return([n for n in self.nodes.values() if n.dominates(node)])
 
 
 
