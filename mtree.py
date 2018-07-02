@@ -45,7 +45,10 @@ class MTree(object):
 	def getNode(self,name):
 		# Returns the node with the given name
 		return([n for n in self.nodes if n.name = name][0])
-		
+
+	def getNodeNames(self):
+		# returns all node names
+		return([n.name for n in self.nodes])
 
 	def getSisters(self,node):
 		# Returns the sister nodes (if any) of a given node
