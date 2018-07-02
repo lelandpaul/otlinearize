@@ -1,2 +1,3 @@
-# optimal-linearization
-Tools for calculating outputs &amp; typologies in Optimal Linearization.
+# Optimal Linearization
+
+Tools for calculating outputs and typologies in Optimal Linearization.
