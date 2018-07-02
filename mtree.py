@@ -31,6 +31,9 @@ class Node(object):
 	def isRoot(self):
 		return(not mother)
 
+	def __repr__(self):
+		return(self.name)
+
 
 class MTree(object):
 
@@ -54,8 +57,11 @@ class MTree(object):
 		return([n.name for n in self.nodes])
 
 	def getSisters(self,node):
-		# Returns the sister nodes (if any) of a given node
-		pass
+		# Yields the sister nodes (if any) of a given node
+		for mom in node.mothers:
+			for n in mom.daughters:
+				if n != node: yield n
+
 
 	def getTerminals(self):
 		# Returns all terminal nodes
