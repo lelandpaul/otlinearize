@@ -57,6 +57,10 @@ class Node(object):
 			if daughter: # this might be None
 				daughter.update_paths()
 
+	@property
+	def branching(self):
+		return(self.head and self.child)
+
 class TerminalNode(Node):
 
 	def __init__(self,name):
@@ -120,4 +124,16 @@ class MTree(object):
 			raise TreeError("No unique root.")
 		self.root = roots[0] # ok, we succeeded
 
+	def __getitem__(self,item):
+		return(self.nodes[item])
+
+	def __iter__(self):
+		yield from self.nodes.values()
+
+	@property
+	def branching_nodes(self):
+		yield from [n for n in self.nodes.values() if n.branching]
+
+
+t = MTree(["A","B"],[("A0","B0")])
 
