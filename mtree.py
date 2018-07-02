@@ -45,8 +45,8 @@ class Node(object):
 		self.tree = tree
 
 	def __repr__(self):
-		if self.label[1] == 0:
-			return(self.label[0]) # special case for complex heads
+		# if self.label[1] == 0:
+		# 	return(self.label[0]) # special case for complex heads
 		return(self.label[0] + str(self.label[1]))
 
 	@property
@@ -141,7 +141,7 @@ class MTree(object):
 	"""
 
 	def __init__(self,terminals,merges):
-		self.terminals = [TerminalNode(n, tree =self) for n in terminals]
+		self.terminals = [TerminalNode(n, tree = self) for n in terminals]
 		self.nodes = {str(n): n for n in self.terminals}
 		self.root = None
 
@@ -206,3 +206,35 @@ class MTree(object):
 	def dominators_of(self,node):
 		# returns the nodes that dominate a given node
 		return([n for n in self.nodes.values() if n.dominates(node)])
+
+
+def parseTreeFile(fname):
+	"""
+	looks for a file in the following format:
+	A, B, C		# terminals in  one line, comma separated,
+	A0			# Unary merge
+	B0, A1		# one merge per line
+	B1, C0		# line-end comments and whitespace are ignored
+	"""
+
+	with open(fname,"r") as f:
+		terminals = f.readline()
+		if '#' in terminals:
+			terminals = terminals.split('#')[0] # ditch comments
+		terminals = ''.join(terminals.split()).split(',') # munge
+		terminals = [t for t in terminals if t] # remove nulls
+
+		merge_list = []
+		for line in f:
+			if '#' in line:
+				line = line.split('#')[0] # ditch comments
+			line = ''.join(line.split()).split(',') #munge
+			head = line[0]
+			try: child = line[1]
+			except IndexError:
+				child = None
+			merge_list.append((head,child))
+
+
+	return(MTree(terminals,merge_list))
+
