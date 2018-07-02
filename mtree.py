@@ -63,6 +63,10 @@ class Node(object):
 	def branching(self):
 		return(self.head and self.child)
 
+	@property
+	def word(self):
+		return(self.label[1] == 0)
+
 class TerminalNode(Node):
 
 	def __init__(self,name):
@@ -140,6 +144,11 @@ class MTree(object):
 	@property
 	def nonterminal_nodes(self):
 		yield from [n for n in self.nodes.values() if n.terminal]
+
+	@property
+	def words(self):
+		yield from [n for n in self.nodes.values() if n.word]
+
 
 
 t = MTree(["A","B"],[("A0","B0")])
