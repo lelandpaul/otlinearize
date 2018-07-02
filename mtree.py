@@ -21,10 +21,18 @@ class Node(object):
 		else: self.mothers = mothers
 		self.head = head
 		self.child = child
-		daughters = (head,child)
+		self.daughters = (head,child)
+		
+		self.paths = []
+		if self.mothers == []: self.paths = [(self,)]
+		for mom in self.mothers:
+			for path in mom.paths:
+				self.paths.append(path + (self,))
 
 	def addMother(self,new_mom):
 		self.mothers.append(new_mom)
+		for path in new_mom.paths:
+			self.paths.append(path + (self,))
 
 	def isTerminal(self):
 		return(not (self.head and self.child))
@@ -73,7 +81,13 @@ class MTree(object):
 		# Returns all terminal nodes
 		return([n for n in self.nodes if n.isTerminal()])
 
-	def getPaths(self,node):
-		# Yields all paths from a given terminal node
-		# Basically: Do DFS upward from the node, yield once you get to the root
-		pass
+
+
+# t = MTree("A")
+# a = t.root
+# t.addNode("B",a)
+# b = t.getNode("B")
+# t.addNode("C",b)
+# c = t.getNode("C")
+# c.addMother(a)
+
