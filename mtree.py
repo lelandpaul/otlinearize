@@ -122,6 +122,11 @@ class TerminalNode(Node):
 		self.terminal = True
 		self.tree = tree
 
+	def __repr__(self):
+		# special case: keep the 0 rank, but don't print it
+		# this will make terminal nodes accessible via "X" rather than "X0"
+		return(self.label[0])
+
 	def update_paths(self):
 		self.paths = []
 		for mom in self.mothers:
@@ -150,21 +155,30 @@ class MTree(object):
 		roots = list(self.terminals)
 		while merges:
 			cur_merge = merges.pop(0) # get the first one
-			if cur_merge[0] not in self.nodes or (cur_merge[1] and cur_merge[1]
-					not in self.nodes):
-				   # We haven't created the necessary nodes yet,
-				   # so skip it and come back
-				merges.append(cur_merge)
-				continue
 
+			# We need to check if we've created both nodes.
+			# And we want to do this in a way that takes advantage of the
+			# alternate naming schemes defined in __getitem__
+			# so "if ___ not in ___" won't cut it.
+			# This is the alternative:
+			try:
+				self[cur_merge[0]] # have we created node 1?
+				self[cur_merge[0]] # have we created node 2?
+			except KeyError: # one of them didn't exist
+				if cur_merge[1]: # this might be null
+					# if it's null, we actually can continue, even with the
+					# exception.
+					merges.append(cur_merge)
+					continue # skip this instruction until we've built more
+			
 			# find the head
-			head = self.nodes[cur_merge[0]]
+			head = self[cur_merge[0]]
 			try: roots.remove(head)
 			except ValueError: pass # wasn't there
 
 			# find the child, if applicable
 			if cur_merge[1]: # this might be None
-				child = self.nodes[cur_merge[1]]
+				child = self[cur_merge[1]]
 				try: roots.remove(child)
 				except ValueError: pass
 			else: child = None
@@ -182,7 +196,18 @@ class MTree(object):
 		self.root = roots[0] # ok, we succeeded
 
 	def __getitem__(self,item):
-		return(self.nodes[item])
+		# This needs to do slightly more than just get the node:
+		# - X0 gets interpreted as X in the absence of X0
+		# - XP gets interpreted as "maximal projection of X"
+		try:
+			return(self.nodes[item])
+		except KeyError:
+			if item[-1] == '0':
+				return(self.nodes[item[:-1]])
+			if item[-1] == 'P':
+				head = self.nodes[item[:-1]]
+				return(head.projections[-1]) # the maximal one is added last
+			raise(KeyError)
 
 	def __iter__(self):
 		yield from self.nodes.values()
