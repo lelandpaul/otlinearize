@@ -26,8 +26,9 @@ three attributes.
 
 class LinConstraint:
 
-	def __init__(self):
+	def __init__(self,name="LinCon"):
 		self.precsets = dict() # dictionary from inp to precset
+		self.name = name
 
 	def __call__(self,inp,out):
 		# (inp,out) -> int
@@ -42,6 +43,9 @@ class LinConstraint:
 	def __getitem__(self,inp):
 		# return the precset
 		return(self.get_precset(inp))
+
+	def __repr__(self):
+		return(self.name)
 
 	def build_precset(self,inp):
 		# given an input, creates a precset.
