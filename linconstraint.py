@@ -34,8 +34,8 @@ class LinConstraint:
 		# (inp,out) -> int
 		precset = self.get_precset(inp)
 		# Map each prec to either 1 or 0 based on the output
-		violations = list(map(precset,
-					lambda x: self.check_viol(x,out)))
+		violations = list(map(lambda x: self.check_viol(x,out),
+							  precset))
 		# Reduce and return
 		return(sum(violations))
 			
@@ -50,8 +50,13 @@ class LinConstraint:
 	def build_precset(self,inp):
 		# given an input, creates a precset.
 		targets = [i for i in self.iterator(inp) if self.filter(i)]
-		precset = list(map(targets,self.reduce))
+		precset = list(map(self.reduce,targets))
+		precset = tuple(map(self.stringify,precset))
 		return(precset)
+
+	def stringify(self,prec):
+		# takes a tuple of sets of nodes, returns a tuple of sets of strings
+		return(tuple(map(lambda y: set(map(lambda x: str(x).lower(),y)),prec)))
 
 	def get_precset(self,inp):
 		# given an input, returns the precset (creating it if necessary)
