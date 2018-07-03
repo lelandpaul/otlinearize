@@ -49,7 +49,7 @@ class LinConstraint:
 
 	def build_precset(self,inp):
 		# given an input, creates a precset.
-		targets = [i for i in self.iterator(inp) if self.filter(i)]
+		targets = [i for i in self.iterator(inp) if self.filter(i,inp)]
 		precset = list(map(self.reduce,targets))
 		precset = tuple(map(self.stringify,precset))
 		return(precset)
@@ -85,7 +85,7 @@ class LinConstraint:
 		# iterates over elements of a tree. To be defined in the subclass.
 		pass
 
-	def filter(self,tree_iter):
+	def filter(self,tree_iter,inp):
 		# Boolean: filters iterated elements. To be defined in the subclass.
 		pass
 
