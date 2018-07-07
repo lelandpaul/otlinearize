@@ -77,9 +77,30 @@ class Tableau:
 			winners.update(item)
 		return(winners)
 
-	def get_winner(self,ranking):
+	def get_winners(self,ranking):
 		# expects the constraints ranked in some order
 		order = tuple([self.constraints.index(con) for con in ranking])
-		return(set(self._contender_dict[order]))
+		return(tuple(self._contender_dict[order]))
+
+
+class Typology:
+	def __init__(self, inputs, constraints, gen = Gen()):
+		self.inputs = tuple(inputs)
+		self.constraints = tuple(constraints)
+		self.gen = gen
+		self.tableaux = [Tableau(inp,constraints,gen = self.gen)
+						for inp in self.inputs]
+
+		self.languages = bidict()
+		for ranking in permutations(self.constraints):
+			self.languages[ranking] = tuple([tab.get_winners(ranking) for
+										tab in self.tableaux])
+
+	@property
+	def size(self):
+		return(len(self.languages.inverse))
+
+
+
 
 
