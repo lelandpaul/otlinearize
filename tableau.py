@@ -43,7 +43,7 @@ class Tableau:
 			self.gen = Gen(function=gen_func)
 		else: self.gen = Gen()
 		self.vectors = self._eval_constraints()
-		self.contenders = self._find_contenders()
+		self._contender_dict = self._find_contenders()
 	
 	def _eval_constraints(self):
 		vectors = bidict()
@@ -60,12 +60,22 @@ class Tableau:
 		#	save the candidates in a set
 		# Except we won't rerank the constraints; instead, we'll just generate
 		# possible tuples of range(n).
-		contenders = set()
+		contenders = bidict()
 		for ranking in permutations(range(len(self.constraints))):
 			winning_vector = sorted(self.vectors.inverse.keys(),
 									key=itemgetter(*ranking))[0]
-			contenders.update(self.vectors.inverse[winning_vector])
+			contenders[tuple(ranking)] = tuple(self.vectors.inverse[winning_vector])
 		return(contenders)
 
+	@property
+	def contenders(self):
+		winners = set()
+		for item in self._contender_dict.inverse.keys():
+			winners.update(item)
+		return(winners)
 
+	def get_winner(self,ranking):
+		# expects the constraints ranked in some order
+		order = tuple([self.constraints.index(con) for con in ranking])
+		return(set(self._contender_dict[order]))
 
