@@ -23,7 +23,7 @@ def gen_strings(tree, null_phon = {}, spaces = False):
 class Gen:
 
 	def __init__(self, function = gen_strings):
-		self.function = gen_strings
+		self.function = function
 		self.dictionary = dict()
 
 	def __call__(self, inp):
