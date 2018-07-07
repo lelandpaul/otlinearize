@@ -3,9 +3,14 @@
 """
 
 Provides the Tableau class. A tableau takes an input, a iterable of
-Constraints, and (optionally) a Gen fuction; it calculates all the violation
-vectors and stores them in a bidirectional dictionary, then identifies the
-winners based on reranking.
+Constraints, and (optionally) a Gen with a custom function; it calculates all
+the violation vectors and stores them in a bidirectional dictionary, then
+identifies the winners based on reranking.
+
+
+Also provides the Typology class. A typology is a set of tableaux that all
+share the same constraint set and gen. It maintains a master dictionary of
+ranking: outputs.
 
 """
 
@@ -36,12 +41,10 @@ class bidict(dict):
 
 
 class Tableau:
-	def __init__(self, inp, constraints, gen_func = None):
+	def __init__(self, inp, constraints, gen = Gen()):
 		self.input = inp
 		self.constraints = tuple(constraints)
-		if gen_func:
-			self.gen = Gen(function=gen_func)
-		else: self.gen = Gen()
+		self.gen = gen
 		self.vectors = self._eval_constraints()
 		self._contender_dict = self._find_contenders()
 	
@@ -78,4 +81,5 @@ class Tableau:
 		# expects the constraints ranked in some order
 		order = tuple([self.constraints.index(con) for con in ranking])
 		return(set(self._contender_dict[order]))
+
 
