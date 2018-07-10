@@ -2,10 +2,10 @@
 
 from itertools import permutations
 
-from bin/mtree import *
-from bin/gen import *
-from bin/con import *
-from bin/tableau import *
+from bin.mtree import *
+from bin.gen import *
+from bin.con import *
+from bin.tableau import *
 
 basic = parseTreeFile('trees/basic.txt')
 basicmv = parseTreeFile('trees/basic-mvnt.txt')

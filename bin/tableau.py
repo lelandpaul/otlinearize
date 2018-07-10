@@ -14,7 +14,7 @@ ranking: outputs.
 
 """
 
-from gen import Gen
+from bin.gen import Gen
 from itertools import permutations
 from operator import itemgetter
 
