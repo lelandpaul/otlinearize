@@ -260,6 +260,4 @@ def parseTreeFile(fname):
 				child = None
 			merge_list.append((head,child))
 
-
 	return(MTree(terminals,merge_list))
-
