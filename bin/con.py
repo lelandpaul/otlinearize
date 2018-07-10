@@ -12,6 +12,10 @@ from itertools import product
 
 
 class Antisymmetry(LinConstraint):
+	"""
+	Enforces the Antisymmetry constraint: maps asymmetric c-command &
+	path-command between heads to precedence.
+	"""
 
 	def __init__(self,name="Antisymmetry"):
 		super().__init__(name) # pass the name into the superclass
@@ -36,6 +40,11 @@ class Antisymmetry(LinConstraint):
 
 
 class HeadFinality(LinConstraint):
+	"""
+	Enforces the HeadFinality constraint: For each branching node, those things
+	path commanded by the node and dominated by its head should follow those
+	things path-commanded by the node and dominated by its child.
+	"""
 
 	def __init__(self,name="HeadFinality",alpha = None):
 		# This one needs to do something funny to account for the alpha
