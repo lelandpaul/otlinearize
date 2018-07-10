@@ -7,7 +7,7 @@ LinConstraint, a callable that evaluates input/output pairs.
 
 """
 
-from linconstraint import LinConstraint
+from bin.linconstraint import LinConstraint
 from itertools import product
 
 

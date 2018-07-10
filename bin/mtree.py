@@ -235,29 +235,40 @@ class MTree(object):
 
 def parseTreeFile(fname):
 	"""
-	looks for a file in the following format:
+	Wrapper for parseTreeString; gets it from a file.
+	"""
+
+	with open(fname,"r") as f:
+		treestring = f.read()
+
+	return(parseTreeString(treestring))
+
+
+def parseTreeString(string):
+	"""
+	Takes a string in the following format:
 	A, B, C		# terminals in  one line, comma separated,
 	A0			# Unary merge
 	B0, A1		# one merge per line
 	B1, C0		# line-end comments and whitespace are ignored
 	"""
 
-	with open(fname,"r") as f:
-		terminals = f.readline()
-		if '#' in terminals:
-			terminals = terminals.split('#')[0] # ditch comments
-		terminals = ''.join(terminals.split()).split(',') # munge
-		terminals = [t for t in terminals if t] # remove nulls
+	# First, split the string
+	string = string.splitlines()
+	# ditch comments:
+	treestring = [x.split('#')[0] for x in string]
 
-		merge_list = []
-		for line in f:
-			if '#' in line:
-				line = line.split('#')[0] # ditch comments
-			line = ''.join(line.split()).split(',') #munge
-			head = line[0]
-			try: child = line[1]
-			except IndexError:
-				child = None
-			merge_list.append((head,child))
+	terminals = treestring.pop(0)
+	terminals = ''.join(terminals.split()).split(',') # munge
+	terminals = [t for t in terminals if t] # remove nulls
 
+	merge_list = []
+	for line in treestring:
+		line = ''.join(line.split()).split(',') #munge
+		head = line[0]
+		try: child = line[1]
+		except IndexError:
+			child = None
+		merge_list.append((head,child))
+	
 	return(MTree(terminals,merge_list))
