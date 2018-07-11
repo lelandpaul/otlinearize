@@ -106,7 +106,8 @@ class Node(object):
 		# true if all paths from the target passes through a projection of this
 		# node.
 		for path in target.paths:
-			if not set(path) & set(self.projections):
+			# we want to only track the thing and its immediate projection
+			if not set(path) & set(self.projections[:2]):
 				return(False)
 		return(True)
 

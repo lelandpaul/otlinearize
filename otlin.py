@@ -10,7 +10,7 @@ from bin.tableau import *
 basic = parseTreeFile('trees/basic.txt')
 basicmv = parseTreeFile('trees/basic-mvnt.txt')
 headmv = parseTreeFile('trees/basic-head.txt')
-treelist = [basic, headmv]
+treelist = [basic, basicmv, headmv]
 
 antisym = Antisymmetry()
 hf = HeadFinality()
