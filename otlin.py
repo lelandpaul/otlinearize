@@ -28,7 +28,7 @@ v_hfa = {o: hfbp(basic,o) for o in outputs}
 
 test = Tableau(basic,conlist)
 
-print(ascii_tableau(test))
+print(tabular_table(test,bounded=True))
 
 # test = Typology(treelist,conlist)
 

@@ -80,7 +80,7 @@ def summarize_rankings(rankingset):
 
 
 def ascii_tableau(tableau,bounded = False):
-	# Prints a tableau in a nice way
+	# Formats a tableau in a nice way
 	# if bounded is set, it includes all candidates; otherwise only contenders
 	constraints = list(tableau.constraints)
 	inp = tableau.input
@@ -105,6 +105,41 @@ def ascii_tableau(tableau,bounded = False):
 	output.append('-' + '-'.join(['-'*length for length in col_lengths]) + '-')
 
 	return('\n'.join(output))
+
+
+def tabular_table(tableau, bounded= False):
+	# Formats a tableau as a latex tabular environment
+	# if bounded is set, includes all candidates; otherwise, only contenders
+	# if the input has a name, it assumes that's a reference
+
+	inp = tableau.input
+	constraints =  list(tableau.constraints)
+
+	con_names = ' & '.join([f'\\textsc{{{c}}}' for c in constraints])
+
+	if bounded:
+		candidates = tableau.vectors
+	else:
+		candidates = {w: tableau.vectors[w] for w in tableau.contenders}
+
+
+	def cand_rows(candidates):
+		output = []
+		for c in candidates:
+			row = f"{c} & " + \
+					" & ".join([f'{v}' for v in candidates[c]]) +\
+					"\\\\"
+			output.append(row)
+		return('\n'.join(output))
+
+	output = r"\begin{tabular}" f"{{|r||{'c|'*len(constraints)}}}\n" \
+			 f"\\ref{{{inp}}} & {con_names} \\\\\n" \
+			 f"\\hline\n\\hline\n" \
+			 f"{cand_rows(candidates)}\n" \
+			 f"\\hline\n" \
+			 r"\end{tabular}"
+	
+	return(output)
 
 
 
