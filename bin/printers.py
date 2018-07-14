@@ -79,7 +79,7 @@ def summarize_rankings(rankingset):
 	return(undominated + list(bin_rankings))
 
 
-def ascii_tableau(tableau,bounded = False):
+def ascii_tableau(tableau,include_bounded = False):
 	# Formats a tableau in a nice way
 	# if bounded is set, it includes all candidates; otherwise only contenders
 	constraints = list(tableau.constraints)
@@ -91,13 +91,22 @@ def ascii_tableau(tableau,bounded = False):
 	output.append('|' + '|'.join([f' {x} ' for x in [inp] + constraints]) + '|')
 	output.append('=' + '='.join(['='*length for length in col_lengths]) + '=')
 
-	if bounded:
-		candidates = tableau.vectors
-	else:
-		candidates = {w: tableau.vectors[w] for w in tableau.contenders}
+	winners = {w: tableau.vectors[w] for w in tableau.contenders}
+	if include_bounded:
+		bounded = {c: tableau.vectors[c] 
+				   for c in tableau.vectors 
+				   if c not in winners}
+	else: bounded = []
 
-	for candidate in candidates:
-		items = (candidate,) + candidates[candidate]
+	for winner in winners:
+		items = (winner,) + winners[winner]
+		output.append('|' + '|'.join([f"{i:^{j}}" 
+								for i, j in zip(items,col_lengths)]) + '|')
+	
+	if include_bounded:
+		output.append('-' + '-'.join(['-'*length for length in col_lengths]) + '-')
+	for loser in bounded:
+		items = (loser,) + bounded[loser]
 		output.append('|' + '|'.join([f"{i:^{j}}" 
 								for i, j in zip(items,col_lengths)]) + '|')
 	
@@ -107,7 +116,7 @@ def ascii_tableau(tableau,bounded = False):
 	return('\n'.join(output))
 
 
-def tabular_table(tableau, bounded= False):
+def tabular_tableau(tableau, include_bounded= False):
 	# Formats a tableau as a latex tabular environment
 	# if bounded is set, includes all candidates; otherwise, only contenders
 	# if the input has a name, it assumes that's a reference
@@ -117,10 +126,12 @@ def tabular_table(tableau, bounded= False):
 
 	con_names = ' & '.join([f'\\textsc{{{c}}}' for c in constraints])
 
-	if bounded:
-		candidates = tableau.vectors
-	else:
-		candidates = {w: tableau.vectors[w] for w in tableau.contenders}
+	winners = {w: tableau.vectors[w] for w in tableau.contenders}
+	if include_bounded:
+		bounded = {c: tableau.vectors[c] 
+				   for c in tableau.vectors 
+				   if c not in winners}
+	else: bounded = []
 
 
 	def cand_rows(candidates):
@@ -135,10 +146,14 @@ def tabular_table(tableau, bounded= False):
 	output = r"\begin{tabular}" f"{{|r||{'c|'*len(constraints)}}}\n" \
 			 f"\\ref{{{inp}}} & {con_names} \\\\\n" \
 			 f"\\hline\n\\hline\n" \
-			 f"{cand_rows(candidates)}\n" \
-			 f"\\hline\n" \
-			 r"\end{tabular}"
+			 f"{cand_rows(winners)}\n"
+
+	if include_bounded:
+		output += "\\hline\n" \
+				  f"{cand_rows(bounded)}\n"
 	
+	output += "\\hline\n"
+
 	return(output)
 
 
