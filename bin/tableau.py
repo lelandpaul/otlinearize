@@ -101,7 +101,10 @@ class Typology:
 		return(len(self.languages.inverse))
 
 	def __getitem__(self,inp):
-		return(self.tableaux[inp])
+		for tableau in self.tableaux:
+			if tableau.input == inp:
+				return(tableau)
+		raise IndexError('No such input.')
 
 
 
