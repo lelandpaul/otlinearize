@@ -78,3 +78,33 @@ def summarize_rankings(rankingset):
 
 	return(undominated + list(bin_rankings))
 
+
+def ascii_tableau(tableau,bounded = False):
+	# Prints a tableau in a nice way
+	# if bounded is set, it includes all candidates; otherwise only contenders
+	constraints = list(tableau.constraints)
+	inp = tableau.input
+	col_lengths = [len(str(x)) + 2 for x in [inp] + constraints]
+	
+	output = []
+	output.append('-' + '-'.join(['-'*length for length in col_lengths]) + '-')
+	output.append('|' + '|'.join([f' {x} ' for x in [inp] + constraints]) + '|')
+	output.append('=' + '='.join(['='*length for length in col_lengths]) + '=')
+
+	if bounded:
+		candidates = tableau.vectors
+	else:
+		candidates = {w: tableau.vectors[w] for w in tableau.contenders}
+
+	for candidate in candidates:
+		items = (candidate,) + candidates[candidate]
+		output.append('|' + '|'.join([f"{i:^{j}}" 
+								for i, j in zip(items,col_lengths)]) + '|')
+	
+
+	output.append('-' + '-'.join(['-'*length for length in col_lengths]) + '-')
+
+	return('\n'.join(output))
+
+
+
