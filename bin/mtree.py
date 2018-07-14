@@ -15,6 +15,8 @@ restrictions:
 
 """
 
+from bin.printers import bracket_form
+
 
 class TreeError(Exception):
 	pass
@@ -146,10 +148,11 @@ class MTree(object):
 	merges - list of tuples (head, child) indicating merges
 	"""
 
-	def __init__(self,terminals,merges):
+	def __init__(self,terminals,merges,name = None):
 		self.terminals = [TerminalNode(n, tree = self) for n in terminals]
 		self.nodes = {str(n): n for n in self.terminals}
 		self.root = None
+		self.name = name
 
 		# build it
 
@@ -233,6 +236,10 @@ class MTree(object):
 		# returns the nodes that dominate a given node
 		return([n for n in self.nodes.values() if n.dominates(node)])
 
+	def __repr__(self):
+		if self.name: return(self.name)
+		return(bracket_form(self))
+
 
 def parseTreeFile(fname):
 	"""
@@ -242,10 +249,12 @@ def parseTreeFile(fname):
 	with open(fname,"r") as f:
 		treestring = f.read()
 
-	return(parseTreeString(treestring))
+	name = fname.split('.')[0].split('/')[-1] # remove extension and path
+
+	return(parseTreeString(treestring,name=name))
 
 
-def parseTreeString(string):
+def parseTreeString(string,name=None):
 	"""
 	Takes a string in the following format:
 	A, B, C		# terminals in  one line, comma separated,
@@ -272,4 +281,4 @@ def parseTreeString(string):
 			child = None
 		merge_list.append((head,child))
 	
-	return(MTree(terminals,merge_list))
+	return(MTree(terminals,merge_list,name=name))
