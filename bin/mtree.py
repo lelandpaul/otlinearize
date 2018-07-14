@@ -241,15 +241,17 @@ class MTree(object):
 		return(bracket_form(self))
 
 
-def parseTreeFile(fname):
+def parseTreeFile(fname,name = None):
 	"""
 	Wrapper for parseTreeString; gets it from a file.
+	Name defaults to the filename.
 	"""
 
 	with open(fname,"r") as f:
 		treestring = f.read()
 
-	name = fname.split('.')[0].split('/')[-1] # remove extension and path
+	if name is None:
+		name = fname.split('.')[0].split('/')[-1] # remove extension and path
 
 	return(parseTreeString(treestring,name=name))
 
