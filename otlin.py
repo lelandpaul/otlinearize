@@ -6,6 +6,7 @@ from bin.mtree import *
 from bin.gen import *
 from bin.con import *
 from bin.tableau import *
+from bin.printers import *
 
 basic = parseTreeFile('trees/basic.txt')
 basicmv = parseTreeFile('trees/basic-mvnt.txt')
@@ -28,6 +29,7 @@ v_hfa = {o: hfbp(basic,o) for o in outputs}
 test = Typology(treelist,conlist)
 
 for lang in test.languages.inverse:
-	print(str(lang) + str(test.languages.inverse[lang]))
+	print(str(lang) + str(summarize_rankings(test.languages.inverse[lang])))
 	print()
+
 
