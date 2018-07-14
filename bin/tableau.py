@@ -10,7 +10,7 @@ identifies the winners based on reranking.
 
 Also provides the Typology class. A typology is a set of tableaux that all
 share the same constraint set and gen. It maintains a master dictionary of
-ranking: outputs.
+{ranking: outputs}.
 
 """
 
@@ -100,6 +100,8 @@ class Typology:
 	def size(self):
 		return(len(self.languages.inverse))
 
+	def __getitem__(self,inp):
+		return(self.tableaux[inp])
 
 
 
