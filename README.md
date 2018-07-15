@@ -1,7 +1,7 @@
 # OTLinearize
 
 Tools for calculating the linearization of syntactic structures using
-Optimality Theory (Prince & Smolensky 1993/2004). This toolset was developped
+Optimality Theory (Prince & Smolensky 1993/2004). This toolset was developed
 as a proof of concept implementation for Optimal Linearization and the specific
 constraints used in that framework, but includes some modules which may be
 useful for testing other OT linearization schemes.
@@ -133,7 +133,7 @@ Some things to note:
 - `#` starts a line-end comment
 - The first line must list all terminals
 - A line with just a single node name indicates unary projection
-- Comma-separated merge statemens `X, Y` indicate that X merges with Y and
+- Comma-separated merge statements `X, Y` indicate that X merges with Y and
   projects.
 - Merge statements can be made in any order, but it's advised to stick to
   bottom-up.
@@ -149,7 +149,7 @@ The `otlinearize` module provides several useful classes:
 A typology is a list of tableau that all share a given `constraint_list` and
 `gen` function. See `bin/tableau.py` for more details.
 
-- `otlinearize.Tableau(tree, constraint_list, gen = gen_strings)'
+- `otlinearize.Tableau(tree, constraint_list, gen = gen_strings)`
 
 A tableau takes a tree and a list of constraints (and a `gen` function),
 evaluates those constraints, and picks winners. See `bin/tableau.py` for more
