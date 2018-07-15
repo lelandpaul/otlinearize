@@ -111,13 +111,13 @@ syntax trees. This specification is limited in the following respects:
 2. All trees are at most binary.
 3. Each terminal must have a unique label.
 4. Internal nodes are labelled algorithmically such that:
-	- X0 is a terminal node.
-	- X is a branching word (created by head movement)
+	- X is a terminal node.
+	- X0 is a branching word (created by head movement)
 	- X1 (X2, ...) is the 1st (2nd, ...) projection of X.
 
 Two shortcuts are provided for referencing nodes (useful for the `--alpha`
 option):
-- 'X' will map to X if it exists and X0 if not.
+- 'X0' will map to X0 if it exists and X if not.
 - 'XP' will map to the maximal projection of X.
 
 The easiest way to build trees is to write a tree specification file. For
@@ -127,11 +127,11 @@ example, the tree below corresponds the following specification:
 
 ```
 A, B, C # Comma-separated list of terminals
-C0		# C0 projects
-B0, C1	# Merge B0 with C1 and project B1
-A0, B0	# Head-move B: [A A0 B0 ]
+C0      # C0 projects
+B0, C1  # Merge B0 with C1 and project B1
+A0, B0  # Head-move B: [A A0 B0 ]
 A, B1
-A1, C1	# Phrase-move CP
+A1, C1  # Phrase-move CP
 ```
 
 Some things to note:
