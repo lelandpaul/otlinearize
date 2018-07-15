@@ -26,11 +26,12 @@ Usage:
     otlinearize.py typology [options] -f <treelist>
 
 Options:
-    -h, --help	Show this screen.
-    --version	Show version.
-    -a, --all	For tableau: output all candidates (not just contenders).
-    --latex	Output in LaTeX format (as opposed to ASCII).
-    --alpha=NODE	Use the default constraints, but specify HF-alpha.
+    -h, --help     Show this screen.
+    --version      Show version.
+    -t             Print trees in labelled-bracket form before output.
+    -a, --all      For tableau: output all candidates (not just contenders).
+    --latex        Output in LaTeX format (as opposed to ASCII).
+    --alpha=NODE   Use the default constraints, but specify HF-alpha.
 ```
 
 otlinearize.py has two main functions:
@@ -97,6 +98,8 @@ domain, use the option `--alpha=NODE`.
 The option `--latex` will cause the output to be formatted as a LaTeX `tabular`
 environment.
 
+The option `-t` will print all of the trees in labelled-bracket form before the
+table.
 
 
 # Tree specification

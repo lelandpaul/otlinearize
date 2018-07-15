@@ -10,16 +10,18 @@ Usage:
     otlinearize.py typology [options] -f <treelist>
 
 Options:
-    -h, --help	Show this screen.
-    --version	Show version.
-    -a, --all	For tableau: output all candidates (not just contenders).
-    --latex	Output in LaTeX format (as opposed to ASCII).
-    --alpha=NODE	Use the default constraints, but specify HF-alpha.
+    -h, --help     Show this screen.
+    --version      Show version.
+    -t             Print trees in labelled-bracket form before output.
+    -a, --all      For tableau: output all candidates (not just contenders).
+    --latex        Output in LaTeX format (as opposed to ASCII).
+    --alpha=NODE   Use the default constraints, but specify HF-alpha.
 """
 
 
 from docopt import docopt
 from itertools import permutations
+import tabulate
 
 from bin.mtree import *
 from bin.gen import *
@@ -44,6 +46,11 @@ if __name__ == '__main__':
 		# now build the tableau:
 		output = Tableau(tree, conlist)
 
+		# If -t is set:
+		if args['-t']:
+			print(tabulate.tabulate([(str(tree),tree.bracket_string())],tablefmt='plain'))
+			print()
+
 		# Output appropriately:
 		if args['--latex']:
 			print(output.print_tabular(include_bounded=args['--all']))
@@ -65,6 +72,12 @@ if __name__ == '__main__':
 
 		# Make our typology:
 		output = Typology(treelist, conlist)
+
+		# If -t is set:
+		if args['-t']:
+			print(tabulate.tabulate([(str(t),t.bracket_string()) for t in treelist],
+				tablefmt='plain'))
+			print()
 
 		# Output appropriately:
 		if args['--latex']:
