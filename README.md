@@ -123,7 +123,8 @@ option):
 The easiest way to build trees is to write a tree specification file. For
 example, the tree below corresponds the following specification:
 
-[[[https://github.com/lelandpaul/otlinearize/doc/tree.png|alt=MultidomTree]]
+![Multidom Tree](https://github.com/lelandpaul/otlinearize/doc/tree.png
+"Multidom Example Tree")
 
 ```
 A, B, C # Comma-separated list of terminals
