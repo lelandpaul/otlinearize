@@ -61,7 +61,6 @@ if __name__ == '__main__':
 			with open(args['<treelist>'],'r') as treef:
 				trees = treef.read()
 				trees = trees.splitlines()
-		print(trees)
 		treelist = [parseTreeFile(t) for t in trees]
 
 		# Make our typology:
