@@ -120,8 +120,10 @@ option):
 - 'X' will map to X if it exists and X0 if not.
 - 'XP' will map to the maximal projection of X.
 
-The easiest way to build trees is to write a tree specification file, which
-have the following format:
+The easiest way to build trees is to write a tree specification file. For
+example, the tree below corresponds the following specification:
+
+[[[https://github.com/lelandpaul/otlinearize/doc/tree.png|alt=MultidomTree]]
 
 ```
 A, B, C # Comma-separated list of terminals
