@@ -237,7 +237,7 @@ class Typology:
 		for lang in self.languages.inverse:
 			ranking_con = self.summarize_rankings(self.languages.inverse[lang])
 			ranking_con = '\n'.join([f'{x}' for x in ranking_con])
-			outputs = [','.join(l) for l in lang]
+			outputs = [', '.join(l) for l in lang]
 			rows.append([ranking_con] + outputs)
 
 		return((rows,header))
