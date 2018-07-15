@@ -25,14 +25,11 @@ v_hf = {o: hf(basic,o) for o in outputs}
 v_hfa = {o: hfbp(basic,o) for o in outputs}
 
 
-test = Tableau(basic,conlist)
+# test = Tableau(basic,conlist)
 
-print(test.print_ascii(True))
+# print(test.print_ascii(True))
 
-# test = Typology(treelist,conlist)
+test = Typology(treelist,conlist)
 
-# for lang in test.languages.inverse:
-# 	print(str(lang) + str(summarize_rankings(test.languages.inverse[lang])))
-# 	print()
-
+print(test)
 

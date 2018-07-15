@@ -18,6 +18,7 @@ from bin.gen import Gen
 from math import factorial
 from itertools import permutations
 from operator import itemgetter
+import tabulate
 
 
 
@@ -225,6 +226,32 @@ class Typology:
 		bin_rankings = set.intersection(*bin_rankings) # reduce
 
 		return(undominated + list(bin_rankings))
+
+
+	def _make_table(self):
+		# assembles the tabular version
+
+		header = ['Ranking Conditions'] + [str(t.input) for t in self.tableaux]
+
+		rows = []
+		for lang in self.languages.inverse:
+			ranking_con = self.summarize_rankings(self.languages.inverse[lang])
+			ranking_con = '\n'.join([f'{x}' for x in ranking_con])
+			outputs = [','.join(l) for l in lang]
+			rows.append([ranking_con] + outputs)
+
+		return((rows,header))
+
+	def print_ascii(self):
+		return(tabulate.tabulate(*self._make_table(),tablefmt='grid'))
+
+	def print_tabular(self):
+		return(tabulate.tabulate(*self._make_table(),tablefmt='latex'))
+
+	def __str__(self):
+		return(self.print_ascii())
+
+
 
 
 
