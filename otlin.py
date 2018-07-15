@@ -6,7 +6,6 @@ from bin.mtree import *
 from bin.gen import *
 from bin.con import *
 from bin.tableau import *
-from bin.printers import *
 
 basic = parseTreeFile('trees/basic.txt')
 basicmv = parseTreeFile('trees/basic-mvnt.txt')
@@ -28,7 +27,7 @@ v_hfa = {o: hfbp(basic,o) for o in outputs}
 
 test = Tableau(basic,conlist)
 
-print(tabular_tableau(test,include_bounded=True))
+print(test.print_ascii(True))
 
 # test = Typology(treelist,conlist)
 

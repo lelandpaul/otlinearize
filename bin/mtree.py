@@ -15,8 +15,6 @@ restrictions:
 
 """
 
-from bin.printers import bracket_form
-
 
 class TreeError(Exception):
 	pass
@@ -236,9 +234,40 @@ class MTree(object):
 		# returns the nodes that dominate a given node
 		return([n for n in self.nodes.values() if n.dominates(node)])
 
+	### printing
+
+	def bracket_string(self, qtree = False):
+		# prints the tree in labeled-bracket form
+		# multidominance is handled by reusing a label (since labels are unique)
+		# if qtree is set, it will print it in a form suitable for qtree.sty to
+		# typeset
+		# always prints in head-final ordering, because it's easier
+
+		def _q(n):
+			if qtree:
+				return(f"[.{{{n}}}")
+			return(f"[{n}")
+
+		def _recurse_on_node(node):
+			if node is None:
+				return("")
+			if node.terminal:
+				# base case
+				return(str(node))
+			left = node.child
+			right = node.head
+			left = _recurse_on_node(left)
+			right = _recurse_on_node(right)
+
+			if left:
+				return(f"{_q(node)} {left} {right} ]")
+			return(f"{_q(node)} {right} ]")
+
+		return(_recurse_on_node(self.root))
+
 	def __repr__(self):
 		if self.name: return(self.name)
-		return(bracket_form(self))
+		return(self.bracket_string())
 
 
 def parseTreeFile(fname,name = None):
