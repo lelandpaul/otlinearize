@@ -86,17 +86,12 @@ class Tableau:
 
 	### printing
 
-	def print_ascii(self,include_bounded = False):
-		# Formats the tableau in a nice way
+
+	def _make_table(self, include_bounded = False):
+		# Formats the tableau for tabulate
 		# if bounded is set, it includes all candidates; otherwise only contenders
 		constraints = list(self.constraints)
 		inp = self.input
-		col_lengths = [len(str(x)) + 2 for x in [inp] + constraints]
-		
-		output = []
-		output.append('-' + '-'.join(['-'*length for length in col_lengths]) + '-')
-		output.append('|' + '|'.join([f' {x} ' for x in [inp] + constraints]) + '|')
-		output.append('=' + '='.join(['='*length for length in col_lengths]) + '=')
 
 		winners = {w: self.vectors[w] for w in self.contenders}
 		if include_bounded:
@@ -105,29 +100,65 @@ class Tableau:
 					   if c not in winners}
 		else: bounded = []
 
+		header = [str(inp)] + [str(x) for x in constraints]
+
+		rows = []
 		for winner in winners:
-			items = (winner,) + winners[winner]
-			output.append('|' + '|'.join([f"{i:^{j}}" 
-									for i, j in zip(items,col_lengths)]) + '|')
-		
-		if include_bounded:
-			output.append('-' + \
-					'-'.join(['-'*length for length in col_lengths]) + '-')
+			rows.append([winner] + list(winners[winner]))
 		for loser in bounded:
-			items = (loser,) + bounded[loser]
-			output.append('|' + '|'.join([f"{i:^{j}}" 
-									for i, j in zip(items,col_lengths)]) + '|')
+			rows.append([loser] + list(bounded[loser]))
+
+		return((rows,header))
+
+	def print_ascii(self, include_bounded=False):
+		return(tabulate.tabulate(*self._make_table(include_bounded)))
+
+
+	# def print_ascii(self,include_bounded = False):
+	# 	# Formats the tableau in a nice way
+	# 	# if bounded is set, it includes all candidates; otherwise only contenders
+	# 	constraints = list(self.constraints)
+	# 	inp = self.input
+	# 	col_lengths = [len(str(x)) + 2 for x in [inp] + constraints]
+		
+	# 	output = []
+	# 	output.append('-' + '-'.join(['-'*length for length in col_lengths]) + '-')
+	# 	output.append('|' + '|'.join([f' {x} ' for x in [inp] + constraints]) + '|')
+	# 	output.append('=' + '='.join(['='*length for length in col_lengths]) + '=')
+
+	# 	winners = {w: self.vectors[w] for w in self.contenders}
+	# 	if include_bounded:
+	# 		bounded = {c: self.vectors[c] 
+	# 				   for c in self.vectors 
+	# 				   if c not in winners}
+	# 	else: bounded = []
+
+	# 	for winner in winners:
+	# 		items = (winner,) + winners[winner]
+	# 		output.append('|' + '|'.join([f"{i:^{j}}" 
+	# 								for i, j in zip(items,col_lengths)]) + '|')
+		
+	# 	if include_bounded:
+	# 		output.append('-' + \
+	# 				'-'.join(['-'*length for length in col_lengths]) + '-')
+	# 	for loser in bounded:
+	# 		items = (loser,) + bounded[loser]
+	# 		output.append('|' + '|'.join([f"{i:^{j}}" 
+	# 								for i, j in zip(items,col_lengths)]) + '|')
 		
 
-		output.append('-' + '-'.join(['-'*length for length in col_lengths]) + '-')
+	# 	output.append('-' + '-'.join(['-'*length for length in col_lengths]) + '-')
 
-		return('\n'.join(output))
+	# 	return('\n'.join(output))
 
 
 	def print_tabular(self, include_bounded= False):
 		# Formats a tableau as a latex tabular environment
 		# if bounded is set, includes all candidates; otherwise, only contenders
 		# if the input has a name, it assumes that's a reference
+
+		# LPK: writing this myself, since I want slightly different formatting
+		# than tabulate's latex style.
 
 		inp = self.input
 		constraints =  list(self.constraints)

@@ -25,11 +25,11 @@ v_hf = {o: hf(basic,o) for o in outputs}
 v_hfa = {o: hfbp(basic,o) for o in outputs}
 
 
-# test = Tableau(basic,conlist)
+test_tab = Tableau(basic,conlist)
 
-# print(test.print_ascii(True))
+print(test_tab.print_ascii(True))
 
-test = Typology(treelist,conlist)
+test_typ = Typology(treelist,conlist)
 
-print(test)
+# print(test_typ)
 
