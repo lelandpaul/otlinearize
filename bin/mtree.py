@@ -165,7 +165,8 @@ class MTree(object):
 			# This is the alternative:
 			try:
 				self[cur_merge[0]] # have we created node 1?
-				self[cur_merge[0]] # have we created node 2?
+				if cur_merge[1]: # might be null
+					self[cur_merge[1]] # have we created node 2?
 			except KeyError: # one of them didn't exist
 				if cur_merge[1]: # this might be null
 					# if it's null, we actually can continue, even with the
@@ -194,7 +195,7 @@ class MTree(object):
 
 		# Ok, we've built a tree. Check if it has a unique root:
 		if len(roots) > 1:
-			raise TreeError("No unique root.")
+			raise TreeError("No unique root:" + str(roots))
 		self.root = roots[0] # ok, we succeeded
 
 	def __getitem__(self,item):
