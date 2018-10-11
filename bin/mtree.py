@@ -23,7 +23,7 @@ class TreeError(Exception):
 class Node(object):
 
 	def __init__(self,head,child,tree=None):
-		if child and head.terminal and child.terminal:
+		if child and head.word and child.word:
 			# special case for head-movement
 			self.label = (head.label[0],head.label[1])
 		else:
@@ -193,6 +193,7 @@ class MTree(object):
 			# Make sure we keep track of this node:
 			self.nodes[str(new_node)] = new_node
 
+
 		# Ok, we've built a tree. Check if it has a unique root:
 		if len(roots) > 1:
 			raise TreeError("No unique root:" + str(roots))
@@ -312,5 +313,7 @@ def parseTreeString(string,name=None):
 		except IndexError:
 			child = None
 		merge_list.append((head,child))
+
+	print(merge_list)
 	
 	return(MTree(terminals,merge_list,name=name))
