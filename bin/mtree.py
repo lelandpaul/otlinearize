@@ -97,7 +97,7 @@ class Node(object):
 		# defined to be non-reflexive, for c-command reasons
 		return(set(self.tree.dominators_of(self)) - {self})
 
-	def ccommand(self,target):
+	def _ccommand(self,target):
 		# returns true if this node ccommands the target
 		# ccommand is defined in terms of dominator subsets
 		return(self.dominators <= target.dominators)
@@ -110,6 +110,23 @@ class Node(object):
 			if not set(path) & set(self.projections[:2]):
 				return(False)
 		return(True)
+
+	def ccommand(self,target):
+		# alt definition of c-command: Domination by sister.
+		for sis in self.sisters:
+			if sis.dominates(target) and not self.dominates(target):
+				return(True)
+		return(False)
+	
+	@property
+	def sisters(self):
+		# Returns the sister of this node; used for c-command relations.
+		sisters = set()
+		for daughter_pair in map(lambda x: x.daughters, self.mothers):
+			for node in daughter_pair:
+				if node and node != self: sisters.add(node)
+		return(sisters)
+
 
 class TerminalNode(Node):
 
