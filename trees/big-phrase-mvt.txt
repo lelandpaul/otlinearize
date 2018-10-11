@@ -1,0 +1,6 @@
+A,B,C,D
+D
+C, DP
+B, CP
+A, BP
+AP, CP
