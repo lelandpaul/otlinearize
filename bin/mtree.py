@@ -102,7 +102,7 @@ class Node(object):
 		# ccommand is defined in terms of dominator subsets
 		return(self.dominators <= target.dominators)
 
-	def path_commands(self,target):
+	def path_command(self,target):
 		# true if all paths from the target passes through a projection of this
 		# node.
 		for path in target.paths:
