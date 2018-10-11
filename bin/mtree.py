@@ -193,7 +193,6 @@ class MTree(object):
 			# Make sure we keep track of this node:
 			self.nodes[str(new_node)] = new_node
 
-
 		# Ok, we've built a tree. Check if it has a unique root:
 		if len(roots) > 1:
 			raise TreeError("No unique root:" + str(roots))
@@ -313,7 +312,5 @@ def parseTreeString(string,name=None):
 		except IndexError:
 			child = None
 		merge_list.append((head,child))
-
-	print(merge_list)
 	
 	return(MTree(terminals,merge_list,name=name))
