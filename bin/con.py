@@ -28,7 +28,7 @@ class Antisymmetry(LinConstraint):
 		# Filter: return true for pairs of (word, terminal) where the word
 		# c-commands the terminal (and not vice versa) and also where the word
 		# path-commands the terminal.
-		return(pair[0].path_commands(pair[1]) and
+		return(pair[0].path_command(pair[1]) and
 			pair[0].ccommand(pair[1]) and not pair[1].ccommand(pair[0]))
 
 	def reduce(self,pair):
@@ -69,9 +69,9 @@ class HeadFinality(LinConstraint):
 		# terminals dominated by the head and path-commanded by node <
 		# terminals dominated by the child and path-commanded by node
 		preceders = set([x for x in node.child.terminals_dominated
-						 if node.path_commands(x)])
+						 if node.path_command(x)])
 		followers = set([x for x in node.head.terminals_dominated
-						 if node.path_commands(x)])
+						 if node.path_command(x)])
 		return((preceders,followers))
 
 
