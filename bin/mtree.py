@@ -107,8 +107,12 @@ class Node(object):
 		# node.
 		for path in target.paths:
 			# we want to only track the thing and its first non-word projection
-			relevant_projections = [x for x in self.projections
-								    if x.label[1] <= self.label[1] + 1]
+			# if self is a non-word, then the projection is trivial
+			if self.label[1] >= 1:
+				relevant_projections = [self]
+			else:
+				relevant_projections = [x for x in self.projections
+										if x.label[1] <= self.label[1] + 1]
 			if not set(path) & set(relevant_projections):
 				return(False)
 		return(True)
