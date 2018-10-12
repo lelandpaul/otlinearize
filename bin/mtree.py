@@ -45,8 +45,8 @@ class Node(object):
 		self.tree = tree
 
 	def __repr__(self):
-		# if self.label[1] == 0:
-		# 	return(self.label[0]) # special case for complex heads
+		if self.label[1] == 0:
+			return(self.label[0]) # special case for complex heads
 		return(self.label[0] + str(self.label[1]))
 
 	@property
@@ -147,9 +147,12 @@ class TerminalNode(Node):
 		self.tree = tree
 
 	def __repr__(self):
-		# special case: keep the 0 rank, but don't print it
-		# this will make terminal nodes accessible via "X" rather than "X0"
-		return(self.label[0])
+		return(self.label[0] + str(self.label[1]))
+
+	@property
+	def s(self):
+		# The form of the string: X0 -> x
+		return(self.label[0].lower())
 
 	def update_paths(self):
 		self.paths = []
@@ -223,15 +226,15 @@ class MTree(object):
 
 	def __getitem__(self,item):
 		# This needs to do slightly more than just get the node:
-		# - X0 gets interpreted as X in the absence of X0
+		# - X gets interpreted as X0 in the absence of X
 		# - XP gets interpreted as "maximal projection of X"
 		try:
 			return(self.nodes[item])
 		except KeyError:
-			if item[-1] == '0':
-				return(self.nodes[item[:-1]])
+			if len(item) == 1: # X is used, but X0 is intended
+				return(self.nodes[item + '0'])
 			if item[-1] == 'P':
-				head = self.nodes[item[:-1]]
+				head = self.nodes[item[:-1] + '0'] # no shortcuts: get the 0
 				return(head.projections[-1]) # the maximal one is added last
 			raise(KeyError)
 

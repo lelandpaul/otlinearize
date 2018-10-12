@@ -2,5 +2,5 @@ A,B,C
 B,C
 A,BP
 C
-B0,CP
-A0,BP
+B,CP
+A,BP

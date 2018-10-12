@@ -1,6 +1,6 @@
 A, B, C # Comma-separated list of terminals
 C0      # C0 projects
-A, B0  # Head-move B: [A0 A B0 ]
+A0, B0  # Head-move B: [A A0 B0 ]
 B0, C1  # Merge B0 with C1 and project B1
-A0, B1
+A, B1
 A1, C1  # Phrase-move CP

@@ -56,7 +56,7 @@ class LinConstraint:
 
 	def stringify(self,prec):
 		# takes a tuple of sets of nodes, returns a tuple of sets of strings
-		return(tuple(map(lambda y: set(map(lambda x: str(x).lower(),y)),prec)))
+		return(tuple(map(lambda y: set(map(lambda x: x.s,y)),prec)))
 
 	def get_precset(self,inp):
 		# given an input, returns the precset (creating it if necessary)

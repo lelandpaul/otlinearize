@@ -111,14 +111,17 @@ syntax trees. This specification is limited in the following respects:
 2. All trees are at most binary.
 3. Each terminal must have a unique label.
 4. Internal nodes are labelled algorithmically such that:
-	- X is a terminal node.
-	- X0 is a branching word (created by head movement)
-	- X1 (X2, ...) is the 1st (2nd, ...) projection of X.
+	- X0 is a terminal node.
+	- X is a branching word (created by head movement)
+	- X1 (X2, ...) is the 1st (2nd, ...) projection of X(0).
 
 Two shortcuts are provided for referencing nodes (useful for the `--alpha`
 option):
-- 'X0' will map to X0 if it exists and X if not.
+- 'X' will map to X if it exists and X0 if not.
 - 'XP' will map to the maximal projection of X.
+
+Caution should be exercised when using these shortcuts, as they may refer to
+different nodes at different stages of the intervention.
 
 The easiest way to build trees is to write a tree specification file. For
 example, the tree below corresponds the following specification:
@@ -140,8 +143,9 @@ Some things to note:
 - A line with just a single node name indicates unary projection
 - Comma-separated merge statements `X, Y` indicate that X merges with Y and
   projects.
-- Merge statements can be made in any order, but it's advised to stick to
-  bottom-up.
+- As long as the 'X' and 'XP' shortcuts are avoided, merge statements can be
+  made in any order. (If you're using these shortcuts, you should be careful to
+build the tree from the bottom up.)
 
 # Advanced usage
 
