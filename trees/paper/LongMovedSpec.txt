@@ -1,0 +1,6 @@
+A, B, C, D  # phrase movement across three heads
+D			# project DP
+C, DP		# complement of C
+B, CP		# complement of B
+A, BP		# complement of A
+AP, DP		# move DP
