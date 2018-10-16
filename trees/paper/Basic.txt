@@ -1,0 +1,4 @@
+A, B, C # Just complementation
+C		# project CP
+B, CP	# complement of B
+A, BP	# complement of A
