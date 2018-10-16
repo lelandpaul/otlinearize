@@ -1,0 +1,8 @@
+A, B, C, E # roll-up head movement with an empty category
+E, C	   # head-move C to B
+B, E	   # head-move E to B
+A, B	   # head-move B to A
+C		   # project C
+E, CP	   # complement of EP
+B, EP	   # complement of CP
+A, BP	   # complement of AP
