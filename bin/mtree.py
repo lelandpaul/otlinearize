@@ -263,6 +263,7 @@ class MTree(object):
 
 	### printing
 
+	@property
 	def bracket_string(self, qtree = False):
 		# prints the tree in labeled-bracket form
 		# multidominance is handled by reusing a label (since labels are unique)
