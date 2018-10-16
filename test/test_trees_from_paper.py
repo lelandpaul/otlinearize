@@ -1,7 +1,10 @@
 #! /usr/python
 
 import pytest
-from bin import *
+from bin import mtree
+from bin import con
+from bin import tableau
+from bin import gen
 
 
 # Load trees
@@ -38,4 +41,79 @@ def test_tree_bracket_string(tree):
 	}
 	assert tree.bracket_string == result_dict[tree.name]
 
+
+
+# Test that the correct contenders are selected
+
+def test_contenders_with_two_constraints(tree):
+	result_dict = {
+			"BaseGenSpec": {'cba','cab'},
+			"MovedSpec":   {'cba','cab'},
+			"RollUpHead":  {'cba','acb'},
+			"RollUpHeadEmpty": {'abc','cba'},
+			"LongHeadEmpty": {'abc', 'bca'},
+			}
+
+	# Build Con:
+	conlist = [ con.Antisymmetry(),
+				con.HeadFinality(),
+				]
+
+	t = tableau.Tableau(tree,
+						conlist,
+						gen = gen.Gen(lambda x: gen.gen_strings(x, null_phon = {'E'}))
+						)
+
+	try:	# The test is going to try some trees that aren't relevant
+		assert t.contenders == result_dict[tree.name]
+	except KeyError:
+		assert 1 == 1 # just pass
+
+
+
+def test_contenders_with_three_constraints(tree):
+	result_dict = {
+			"Basic": {'acb','abc','cba'},
+			"LongMovedSpec": {'dacb','dabc','dcba'},
+			"HighHead": {'badc','bacd','dcba'},
+			}
+
+	# Build Con:
+	conlist = [ con.Antisymmetry(),
+				con.HeadFinality(),
+				con.HeadFinality(alpha = 'BP'),
+				]
+
+	t = tableau.Tableau(tree,
+						conlist,
+						gen = gen.Gen(lambda x: gen.gen_strings(x, null_phon = {'E'}))
+						)
+
+	try:	# The test is going to try some trees that aren't relevant
+		assert t.contenders == result_dict[tree.name]
+	except KeyError:
+		assert 1 == 1 # just pass
+
+
+def test_contenders_ComplexMovedSpec(tree):
+	# This one needs a different HeadFinality-Alpha
+	result_dict = {
+			"ComplexMovedSpec": {'dcab','cdab','dcba'},
+			}
+
+	# Build Con:
+	conlist = [ con.Antisymmetry(),
+				con.HeadFinality(),
+				con.HeadFinality(alpha = 'CP'),
+				]
+
+	t = tableau.Tableau(tree,
+						conlist,
+						gen = gen.Gen(lambda x: gen.gen_strings(x, null_phon = {'E'}))
+						)
+
+	try:	# The test is going to try some trees that aren't relevant
+		assert t.contenders == result_dict[tree.name]
+	except KeyError:
+		assert 1 == 1 # just pass
 
