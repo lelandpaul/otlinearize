@@ -1,0 +1,5 @@
+A, B, C # CP moves from comp,B to spec,A
+C		# project
+B, CP	# merge comp of B
+A, BP	# merge comp of A
+AP, CP	# move CP
