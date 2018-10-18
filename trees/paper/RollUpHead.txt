@@ -1,0 +1,6 @@
+A, B, C # roll-up head movement
+B, C	# head-move C to B
+A, B	# head-move B to A
+C		# project C
+B, CP	# complement of CP
+A, BP	# complement of AP

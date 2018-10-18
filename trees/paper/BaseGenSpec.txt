@@ -1,0 +1,5 @@
+A, B, C # BaseGenSpec: CP is base generated in spec,A
+B		# project BP
+A, BP	# merge complement
+C		# project CP
+AP, CP	# merge specifier

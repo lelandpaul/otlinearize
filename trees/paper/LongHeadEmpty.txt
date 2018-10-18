@@ -1,0 +1,7 @@
+A, B, C, E	# head movement across a specifer with an empty category
+C			# Project CP
+B			# Project BP
+A, CP		# complement of A
+AP, BP		# Spec of A
+E0, A0		# head-move A0
+E, AP		# complement of E
