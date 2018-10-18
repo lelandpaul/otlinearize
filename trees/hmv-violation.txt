@@ -1,0 +1,5 @@
+A, B, C 	# Non-HMC-respecting head movement
+C			# Project CP
+B, CP		# complement of B
+A0, C0		# head-move C (across B)
+A, BP		# complement of B
