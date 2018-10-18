@@ -345,6 +345,7 @@ def parseTreeString(string,name=None):
 	merge_list = []
 	for line in treestring:
 		line = ''.join(line.split()).split(',') #munge
+		if line == '': continue # blank line
 		head = line[0]
 		try: child = line[1]
 		except IndexError:

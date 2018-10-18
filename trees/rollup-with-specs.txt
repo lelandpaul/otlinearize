@@ -1,0 +1,10 @@
+A,B,C,X,Y   # roll-up head movement across two specifiers (X&Y)
+X
+Y			# Project our specs
+C			# project (null complement)
+CP, YP		# spec of C
+B0, C0		# headmove
+B, CP		# complement of B
+BP, XP		# spec of B
+A0, B		# headmove
+A, BP		# comp of A
