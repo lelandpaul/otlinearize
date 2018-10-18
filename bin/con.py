@@ -71,7 +71,7 @@ class HeadFinality(LinConstraint):
 		preceders = set([x for x in node.child.terminals_dominated
 						 if node.path_command(x) and node.child.path_command(x)])
 		followers = set([x for x in node.head.terminals_dominated
-						 if node.path_command(x) and node.head.path_command(x)])
+						 if node.path_command(x) and not node.child.path_command(x)])
 		return((preceders,followers))
 
 

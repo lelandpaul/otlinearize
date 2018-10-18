@@ -97,12 +97,7 @@ class Node(object):
 		# defined to be non-reflexive, for c-command reasons
 		return(set(self.tree.dominators_of(self)) - {self})
 
-	def _ccommand(self,target):
-		# returns true if this node ccommands the target
-		# ccommand is defined in terms of dominator subsets
-		return(self.dominators <= target.dominators)
-
-	def path_command(self,target):
+	def _path_command(self,target):
 		# true if all paths from the target passes through a projection of this
 		# node.
 		if self.label[1] >= 1:
@@ -117,12 +112,28 @@ class Node(object):
 				return(False)
 		return(True)
 
-	def ccommand(self,target):
-		# alt definition of c-command: Domination by sister.
+	def path_command(self,target):
+		# True if all paths from the target pass through any projection of this
+		# node.
+		for path in target.paths:
+			if not set(path) & set(self.projections):
+				return(False)
+		return(True)
+
+	def _ccommand(self,target):
+		# definition of c-command: Domination by sister.
 		for sis in self.sisters:
 			if sis.dominates(target) and not self.dominates(target):
 				return(True)
 		return(False)
+
+	def ccommand(self,target):
+		# alt definition: path-command by sister
+		for sis in self.sisters:
+			if sis.path_command(target) and not self.dominates(target):
+				return(True)
+		return(False)
+
 	
 	@property
 	def sisters(self):
