@@ -1,0 +1,4 @@
+A, B   # phrase movement from comp to spec position of the same phrase
+B	   # project B
+A, BP  # complement of A
+AP, BP # movement
