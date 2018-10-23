@@ -120,20 +120,15 @@ class Node(object):
 				return(False)
 		return(True)
 
-	def _ccommand(self,target):
-		# definition of c-command: Domination by sister.
-		for sis in self.sisters:
-			if sis.dominates(target) and not self.dominates(target):
-				return(True)
-		return(False)
-
 	def ccommand(self,target):
-		# alt definition: path-command by sister
+		# definition: path-command by sister
 		for sis in self.sisters:
 			if sis.path_command(target):
 				return(True)
 		return(False)
 
+	def asym_ccommand(self,target):
+		return(self.ccommand(target) and not target.ccommand(self))
 	
 	@property
 	def sisters(self):

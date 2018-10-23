@@ -21,21 +21,26 @@ class Antisymmetry(LinConstraint):
 		super().__init__(name) # pass the name into the superclass
 
 	def iterator(self, tree):
-		# Iterate over pairs of words and terminals
-		yield from product(tree.words,tree.terminals)
+		# Iterate over words and sets of terminals asymmetrically-ccommanded by
+		# those words
+		# We have to do pre-filtering here: eliminate terminals that aren't
+		# path-commanded
+		for word in tree.words:
+			followers = [n for n in tree.terminals if word.asym_ccommand(n) and
+					word.path_command(n)]
+			yield (word, followers)
+
 
 	def filter(self,pair,tree):
-		# Filter: return true for pairs of (word, terminal) where the word
-		# c-commands the terminal (and not vice versa) and also where the word
-		# path-commands the terminal.
-		return(pair[0].path_command(pair[1]) and
-			pair[0].ccommand(pair[1]) and not pair[1].ccommand(pair[0]))
+		# We've already pre-filtered these; just make sure the follower set
+		# isn't empty
+		return(pair[1])
 
 	def reduce(self,pair):
 		# Make a prec: take the set of terminals dominated by the word and set
 		# them to precede the terminal.
 		preceders = set(pair[0].terminals_dominated)
-		followers = {pair[1]}
+		followers = set(pair[1])
 		return((preceders,followers))
 
 
