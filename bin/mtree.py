@@ -130,7 +130,7 @@ class Node(object):
 	def ccommand(self,target):
 		# alt definition: path-command by sister
 		for sis in self.sisters:
-			if sis.path_command(target) and not self.dominates(target):
+			if sis.path_command(target):
 				return(True)
 		return(False)
 
@@ -345,7 +345,7 @@ def parseTreeString(string,name=None):
 	merge_list = []
 	for line in treestring:
 		line = ''.join(line.split()).split(',') #munge
-		if line == '': continue # blank line
+		if line == ['']: continue # blank line
 		head = line[0]
 		try: child = line[1]
 		except IndexError:

@@ -8,3 +8,4 @@ B, CP		# complement of B
 BP, XP		# spec of B
 A0, B		# headmove
 A, BP		# comp of A
+
