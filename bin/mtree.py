@@ -99,21 +99,6 @@ class Node(object):
 		# defined to be non-reflexive, for c-command reasons
 		return(set(self.tree.dominators_of(self)) - {self})
 
-	def _path_command(self,target):
-		# true if all paths from the target passes through a projection of this
-		# node.
-		if self.label[1] >= 1:
-			relevant_projections = [self]
-		else:
-			relevant_projections = [x for x in self.projections
-									if x.label[1] <= self.label[1] + 1]
-		for path in target.paths:
-			# we want to only track the thing and its first non-word projection
-			# if self is a non-word, then the projection is trivial
-			if not set(path) & set(relevant_projections):
-				return(False)
-		return(True)
-
 	def path_command(self,target):
 		# True if all paths from the target pass through any projection of this
 		# node.
