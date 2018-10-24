@@ -131,6 +131,7 @@ class Node(object):
 
 	def tccommand(self,target):
 		# total c-command: path-command by a sister and a mother
+		if self.dominates(target): return(False)
 		for (sis, mom) in product(self.sisters, self.mothers):
 			if sis.path_command(target) and mom.path_command(target):
 				return(True)
