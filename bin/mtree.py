@@ -15,6 +15,8 @@ restrictions:
 
 """
 
+from itertools import product
+
 
 class TreeError(Exception):
 	pass
@@ -121,14 +123,24 @@ class Node(object):
 		return(True)
 
 	def ccommand(self,target):
-		# definition: path-command by sister
+		# c-command: domination by sister
 		for sis in self.sisters:
-			if sis.path_command(target):
+			if sis.dominates(target):
+				return(True)
+		return(False)
+
+	def tccommand(self,target):
+		# total c-command: path-command by a sister and a mother
+		for (sis, mom) in product(self.sisters, self.mothers):
+			if sis.path_command(target) and mom.path_command(target):
 				return(True)
 		return(False)
 
 	def asym_ccommand(self,target):
 		return(self.ccommand(target) and not target.ccommand(self))
+	
+	def asym_tccommand(self,target):
+		return(self.tccommand(target) and not target.tccommand(self))
 	
 	@property
 	def sisters(self):
